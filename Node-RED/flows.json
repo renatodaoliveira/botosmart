@@ -1,0 +1,369 @@
+[
+    {
+        "id": "bfcffcae633af578",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2613cc6e1a5106e4",
+        "type": "mqtt in",
+        "z": "bfcffcae633af578",
+        "name": "",
+        "topic": "monitor/boia/medicoes",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "fef0432977e50537",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 280,
+        "wires": [
+            [
+                "a826949f6226e291",
+                "f12e89ab92cd44f2",
+                "1169112d89e6b22b"
+            ]
+        ]
+    },
+    {
+        "id": "a826949f6226e291",
+        "type": "ui_gauge",
+        "z": "bfcffcae633af578",
+        "name": "",
+        "group": "590cf1b51ab36156",
+        "order": 4,
+        "width": 12,
+        "height": 7,
+        "gtype": "gage",
+        "title": "Monitoramento",
+        "label": "mm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#ff0000",
+            "#e6e600",
+            "#00ff11"
+        ],
+        "seg1": "150",
+        "seg2": "180",
+        "diff": false,
+        "className": "",
+        "x": 440,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f12e89ab92cd44f2",
+        "type": "ui_chart",
+        "z": "bfcffcae633af578",
+        "name": "",
+        "group": "590cf1b51ab36156",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Monitoramento",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 480,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "43c32c37c03a0c39",
+        "type": "mqtt in",
+        "z": "bfcffcae633af578",
+        "name": "",
+        "topic": "monitor/boia/alerta",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "fef0432977e50537",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 460,
+        "wires": [
+            [
+                "b6a904b6d4e839f6",
+                "79f406305ada1123",
+                "10796101bdde0987"
+            ]
+        ]
+    },
+    {
+        "id": "b6a904b6d4e839f6",
+        "type": "ui_text",
+        "z": "bfcffcae633af578",
+        "group": "590cf1b51ab36156",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Estado de Monitoramento",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 490,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "79f406305ada1123",
+        "type": "function",
+        "z": "bfcffcae633af578",
+        "name": "function 2",
+        "func": "// Texto que você quer verificar\nvar valorEsperado = \"Anomalia Detectada!\";\n\n// Verifica se o texto recebido corresponde\nif (msg.payload === valorEsperado) {\n    var texto = \"🚨 Atenção: BoiaXP com Anomalia!\";\n    msg.url = \"https://api.telegram.org/>>>token<<</sendMessage?chat_id=>>>chat-id<<<&text=\" + encodeURIComponent(texto);\n    return msg;\n} else {\n    return null; // Não envia nada se não corresponder\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 540,
+        "wires": [
+            [
+                "972a87cdab82b97b"
+            ]
+        ]
+    },
+    {
+        "id": "9850ca6e502c0bdf",
+        "type": "function",
+        "z": "bfcffcae633af578",
+        "name": "function 1",
+        "func": "// Suponha que msg.payload seja o valor da distância\nvar baseURL = \"https://script.google.com/macros/s/>>>token<<</exec\";\nvar id = \"BoiaXP\"; \nvar distancia = parseFloat(msg.payload);\n\nif (!isNaN(distancia)) {\n    msg.url = `${baseURL}?id=${id}&distancia=${distancia}`;\n    return msg;\n} else {\n    return null; // impede requisição se valor for inválido\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 360,
+        "wires": [
+            [
+                "88c36bff090b595f"
+            ]
+        ]
+    },
+    {
+        "id": "1169112d89e6b22b",
+        "type": "delay",
+        "z": "bfcffcae633af578",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "60",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 370,
+        "y": 360,
+        "wires": [
+            [
+                "9850ca6e502c0bdf"
+            ]
+        ]
+    },
+    {
+        "id": "972a87cdab82b97b",
+        "type": "http request",
+        "z": "bfcffcae633af578",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "",
+        "persist": false,
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 660,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "10796101bdde0987",
+        "type": "function",
+        "z": "bfcffcae633af578",
+        "name": "function 3",
+        "func": "// Filtro de Anomalia!\nif (msg.payload === \"Anomalia Detectada!\") {\n    msg.headers = {\n        \"Content-Type\": \"application/json\",\n        \"Authorization\": \"Bearer >>>token<<<\"\n    };\n\n    msg.payload = {\n        messaging_product: \"whatsapp\",\n        to: \"5598988051000\",\n        type: \"template\",\n        template: {\n            name: \"alerta\",\n            language: {\n                code: \"pt_BR\"\n            }\n        }\n    };\n\n    return msg;\n}\n\nreturn null; // cancela envio se não corresponder\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 620,
+        "wires": [
+            [
+                "d2b55ba76641e874"
+            ]
+        ]
+    },
+    {
+        "id": "d2b55ba76641e874",
+        "type": "http request",
+        "z": "bfcffcae633af578",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://graph.facebook.com/v22.0/>>>id-app<<</messages",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 660,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "88c36bff090b595f",
+        "type": "http request",
+        "z": "bfcffcae633af578",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 760,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c239bfda62526395",
+        "type": "ui_template",
+        "z": "bfcffcae633af578",
+        "group": "590cf1b51ab36156",
+        "name": "Logo BotoSmart",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<div style=\"text-align: center; margin-top: 10px;\">\n  <img src=\"https://i.imgur.com/Ks1iL1A.png\" alt=\"Logo\" style=\"max-width: 35%;\">\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 160,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fef0432977e50537",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "52.28.242.147",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "590cf1b51ab36156",
+        "type": "ui_group",
+        "name": "Monitor",
+        "tab": "3e5f118099b42c50",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3e5f118099b42c50",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
