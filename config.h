@@ -37,10 +37,10 @@
 
 
 // --- CONFIGURAÇÃO DE REDE E MQTT 
-#define WIFI_SSID             "EmbarcaTech"
-#define WIFI_PASSWORD         "iot123456"
-#define MQTT_BROKER_IP        "52.28.242.147"
-#define MQTT_BROKER_PORT      1883 
+#define WIFI_SSID             "Nome do WiFi"
+#define WIFI_PASSWORD         "SenhadoWiFi"
+#define MQTT_BROKER_IP        "123.123.###.###"
+#define MQTT_BROKER_PORT      1883
 #define MQTT_CLIENT_ID        "PicoWMonitorAlagamentos"
 
 // --- TÓPICOS MQTT ---
