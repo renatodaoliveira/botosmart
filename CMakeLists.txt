@@ -26,31 +26,31 @@ set(PICO_BOARD pico_w CACHE STRING "Tipo de placa")
 include(pico_sdk_import.cmake)
 
 # Declara o projeto CMake
-project(Monitor C CXX ASM)
+project(botosmart C CXX ASM)
 
 # Inicializa o SDK do Raspberry Pi Pico
 pico_sdk_init()
 
 # Adiciona o executável com todos os arquivos fonte (.c)
-add_executable(Monitor
+add_executable(botosmart
     main.c
     hardware_oled.c
     mqtt_config.c
     vl53l0x.c
 )
 
-target_link_libraries(Monitor
+target_link_libraries(botosmart
     pico_stdlib
 )
 
 # Habilita a saída de terminal via USB
-pico_enable_stdio_usb(Monitor 1)
-pico_enable_stdio_uart(Monitor 0)
+pico_enable_stdio_usb(botosmart 1)
+pico_enable_stdio_uart(botosmart 0)
 
 
 # Vincula todas as bibliotecas necessárias em um só lugar
 # <<< MELHORIA: Tudo em um único comando para maior clareza
-target_link_libraries(Monitor
+target_link_libraries(botosmart
     hardware_i2c
     hardware_timer
     pico_cyw43_arch_lwip_threadsafe_background
@@ -58,10 +58,10 @@ target_link_libraries(Monitor
 )
 
 # Adiciona os diretórios de inclusão para os arquivos de cabeçalho (.h)
-target_include_directories( Monitor PRIVATE
+target_include_directories( botosmart PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_LIST_DIR}/lib/ssd1306 
 )
 
 # Adiciona a geração de outros formatos de binário (uf2, etc.)
-pico_add_extra_outputs(Monitor)
+pico_add_extra_outputs(botosmart)
